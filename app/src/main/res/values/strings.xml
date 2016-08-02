@@ -3,5 +3,6 @@
 
     <string name="app_name">SimpleCPTweets</string>
     <string name="login_label">Connect to Twitter</string>
+    <string name="title_activity_timeline">Home Timeline</string>
 
 </resources>
