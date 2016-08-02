@@ -7,6 +7,7 @@ import android.view.View;
 import com.codepath.oauth.OAuthLoginActionBarActivity;
 
 // Where the user will sign in to Twitter
+public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
