@@ -44,13 +44,13 @@ public class TimelineActivity extends AppCompatActivity {
         client.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                Toast.makeText(getApplicationContext(), "JSON success", Toast.LENGTH_SHORT).show();
+                Toast.makeText(TimelineActivity.this, "JSON success", Toast.LENGTH_SHORT).show();
                 Log.d("DEBUG", response.toString());
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Toast.makeText(getApplicationContext(), "JSON failure", Toast.LENGTH_SHORT).show();
+                Toast.makeText(TimelineActivity.this, "JSON failure", Toast.LENGTH_SHORT).show();
                 Log.d("DEBUG", errorResponse.toString());
             }
         });

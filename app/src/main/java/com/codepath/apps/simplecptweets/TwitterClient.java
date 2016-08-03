@@ -54,6 +54,7 @@ public class TwitterClient extends OAuthBaseClient {
 		params.put("count", 25);
 		// get all tweets from the very beginning
 		params.put("since_id", 1);
+		client.get(apiUrl, params, handler);
 	}
 
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
