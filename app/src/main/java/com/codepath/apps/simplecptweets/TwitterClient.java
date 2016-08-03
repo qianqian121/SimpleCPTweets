@@ -23,7 +23,7 @@ import org.scribe.builder.api.TwitterApi;
  */
 public class TwitterClient extends OAuthBaseClient {
 	public static final Class<? extends Api> REST_API_CLASS = TwitterApi.class; // Change this
-	public static final String REST_URL = "http://api.twitter.com/1.1/"; // Change this, base API URL
+	public static final String REST_URL = "https://api.twitter.com/1.1"; // Change this, base API URL
 	public static final String REST_CONSUMER_KEY = "EVRFr8ZFV2apS4tztCEgyIGjy";       // Change this
 	public static final String REST_CONSUMER_SECRET = "uyaRfGYlSLZ1LzWtVebmtmhBjeaoR97zocJEZf44YXsclwZFpo"; // Change this
 	public static final String REST_CALLBACK_URL = "oauth://simplecptweets"; // Change this (here and in manifest)
@@ -48,7 +48,7 @@ public class TwitterClient extends OAuthBaseClient {
 	// count=25
 	// since_id=1
 	public void getHomeTimeline(AsyncHttpResponseHandler handler) {
-		String apiUrl = getApiUrl("status/home_timeline.json");
+		String apiUrl = getApiUrl("statuses/home_timeline.json");
 		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
 		params.put("count", 25);
