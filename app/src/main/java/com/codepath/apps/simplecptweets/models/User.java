@@ -1,15 +1,23 @@
 package com.codepath.apps.simplecptweets.models;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
  * Created by qiming on 8/2/2016.
  */
-public class User {
+@Table(name = "users")
+public class User extends Model {
     // list attributes
+    @Column(name = "name")
     private String name;
+    @Column(name = "uid", index = true)
     private long uid;
+    @Column(name = "screename")
     private String screeName;
 
     public String getName() {
