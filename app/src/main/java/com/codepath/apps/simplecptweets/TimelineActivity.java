@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -37,6 +38,8 @@ public class TimelineActivity extends AppCompatActivity implements ComposeFragme
     RecyclerView rvTweets;
     @BindView(R.id.fab)
     FloatingActionButton fab;
+    @BindView(R.id.swipeContainer)
+    SwipeRefreshLayout swipeContainer;
     private TwitterClient client;
     TweetCursorAdapter mTweetCursorAdapter;
     Cursor mCursor;
@@ -56,6 +59,19 @@ public class TimelineActivity extends AppCompatActivity implements ComposeFragme
         rvTweets.setLayoutManager(mLinearLayoutManager);
         setupAdapter();
         populateTimeline();
+
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                populateTimeline();
+            }
+        });
+
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -143,6 +159,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeFragme
                 Tweet.fromJson(response);
 //                mTweetCursorAdapter.swapCursor(mCursor);
                 mTweetCursorAdapter.notifyDataSetChanged();
+                swipeContainer.setRefreshing(false);
             }
 
             @Override
