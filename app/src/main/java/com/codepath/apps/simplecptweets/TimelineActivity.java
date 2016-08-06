@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -17,9 +17,9 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.activeandroid.content.ContentProvider;
-import com.codepath.apps.simplecptweets.activities.ComposeActivity;
 import com.codepath.apps.simplecptweets.adapters.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.simplecptweets.adapters.TweetCursorAdapter;
+import com.codepath.apps.simplecptweets.fragments.ComposeFragment;
 import com.codepath.apps.simplecptweets.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -30,7 +30,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 
-public class TimelineActivity extends AppCompatActivity {
+public class TimelineActivity extends AppCompatActivity implements ComposeFragment.ComposeDialogListener {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.rvTweets)
@@ -61,10 +61,13 @@ public class TimelineActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                Intent intent = new Intent(TimelineActivity.this, ComposeActivity.class);
-                startActivity(intent);
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//                Intent intent = new Intent(TimelineActivity.this, ComposeActivity.class);
+//                startActivity(intent);
+                FragmentManager fm = getSupportFragmentManager();
+                ComposeFragment composeFragment = ComposeFragment.newInstance();
+                composeFragment.show(fm, "fragment_compose");
             }
         });
     }
@@ -150,4 +153,8 @@ public class TimelineActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onFinishEditDialog() {
+        mTweetCursorAdapter.notifyDataSetChanged();
+    }
 }
