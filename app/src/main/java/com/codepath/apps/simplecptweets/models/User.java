@@ -20,7 +20,7 @@ public class User extends Model {
     private String name;
     @Column(name = "uid", index = true)
     private long uid;
-    @Column(name = "screename")
+    @Column(name = "screeName")
     private String screeName;
 
     public String getName() {
@@ -39,6 +39,7 @@ public class User extends Model {
         return uid;
     }
 
+    @Column(name = "profileImageUrl")
     private String profileImageUrl;
 
     //
@@ -63,7 +64,7 @@ public class User extends Model {
             e.printStackTrace();
         }
         User existingUser =
-                new Select().from(User.class).where("remote_id = ?", rId).executeSingle();
+                new Select().from(User.class).where("uid = ?", rId).executeSingle();
         if (existingUser != null) {
             // found and return existing
             return existingUser;
@@ -75,4 +76,12 @@ public class User extends Model {
         }
     }
 
+    public static User find(long rId) {
+//        long rId = 0; // get just the remote id
+
+        User existingUser =
+                new Select().from(User.class).where("uid = ?", rId).executeSingle();
+
+            return existingUser;
+    }
 }

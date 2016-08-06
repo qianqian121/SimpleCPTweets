@@ -26,9 +26,27 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
+        android:text="Tweet Body"
         android:id="@+id/tvBody"
-        android:layout_alignBottom="@+id/ivProfileImage"
-        android:layout_alignLeft="@+id/tvUserName"
+        android:layout_marginTop="7dp"
+        android:layout_below="@+id/tvUserName"
         android:layout_alignStart="@+id/tvUserName" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ScreenName"
+        android:id="@+id/tvScreenName"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/tvUserName"
+        android:layout_marginStart="11dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="timeline"
+        android:id="@+id/tvTimeLine"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/tvScreenName"
+        android:layout_marginStart="11dp" />
 </RelativeLayout>
