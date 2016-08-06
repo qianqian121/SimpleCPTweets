@@ -91,6 +91,7 @@ public class TimelineActivity extends AppCompatActivity {
             @Override
             public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 //                populateTimeline();
+                mCursor = data;
                 mTweetCursorAdapter.swapCursor(data);
             }
 
@@ -114,7 +115,7 @@ public class TimelineActivity extends AppCompatActivity {
                         Tweet.fromJson(response);
 //                mTweetCursorAdapter.swapCursor(mCursor);
                         mTweetCursorAdapter.notifyDataSetChanged();
-                        mTweetCursorAdapter.notifyItemRangeChanged(totalItemsCount, mCursor.getCount());
+//                        mTweetCursorAdapter.notifyItemRangeChanged(totalItemsCount, mCursor.getCount());
                     }
 
                     @Override
@@ -123,6 +124,7 @@ public class TimelineActivity extends AppCompatActivity {
                         Log.d("TWITTER", errorResponse.toString());
                     }
                 });
+                mTweetCursorAdapter.notifyItemRangeChanged(totalItemsCount, totalItemsCount + 25);
                 return;
             }
         });
