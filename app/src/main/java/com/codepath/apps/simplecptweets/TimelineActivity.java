@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.activeandroid.content.ContentProvider;
+import com.codepath.apps.simplecptweets.activities.DetailActivity;
 import com.codepath.apps.simplecptweets.adapters.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.simplecptweets.adapters.TweetCursorAdapter;
 import com.codepath.apps.simplecptweets.fragments.ComposeFragment;
@@ -144,6 +145,15 @@ public class TimelineActivity extends AppCompatActivity implements ComposeFragme
                     }
                 });
                 mTweetCursorAdapter.notifyItemRangeChanged(totalItemsCount, totalItemsCount + 25);
+                return;
+            }
+        });
+
+        mTweetCursorAdapter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(TimelineActivity.this, DetailActivity.class);
+                startActivity(intent);
                 return;
             }
         });

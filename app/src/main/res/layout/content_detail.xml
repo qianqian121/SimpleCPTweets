@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.codepath.apps.simplecptweets.activities.DetailActivity"
+    tools:showIn="@layout/activity_detail">
+
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/ivProfileImage"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:background="#17ccf5" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User Name"
+        android:id="@+id/tvUserName"
+        android:layout_marginLeft="23dp"
+        android:layout_marginStart="23dp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/ivProfileImage"
+        android:layout_toEndOf="@+id/ivProfileImage" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tweet Body"
+        android:id="@+id/tvBody"
+        android:autoLink="all"
+        android:linksClickable="true"
+        android:textColorLink="@android:color/holo_blue_light"
+        android:layout_marginTop="28dp"
+        android:layout_below="@+id/ivProfileImage"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ScreenName"
+        android:id="@+id/tvScreenName"
+        android:layout_below="@+id/tvUserName"
+        android:layout_alignStart="@+id/tvUserName" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="timeline"
+        android:id="@+id/tvTimeLine"
+        android:layout_below="@+id/wvMedia"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="39dp" />
+
+    <WebView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/wvMedia"
+        android:layout_below="@+id/tvBody"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="18dp"
+        android:layout_alignParentEnd="true" />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTimeLine"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="83dp"
+        android:layout_alignParentEnd="true"
+        app:counterEnabled="true"
+        app:counterMaxLength="140"
+        app:counterTextAppearance="@style/TextAppearance.Design.Counter"
+        app:counterOverflowTextAppearance="@style/TextAppearance.Design.Counter.Overflow">
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:hint="Reply to"
+            android:id="@+id/etReply" />
+    </android.support.design.widget.TextInputLayout>
+</RelativeLayout>
