@@ -2,6 +2,8 @@ package com.codepath.apps.simplecptweets.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -61,10 +63,12 @@ public class TweetCursorAdapter extends CursorRecyclerViewAdapter<TweetCursorAda
         @BindView(R.id.tvTimeLine)
         TextView tvTimeLine;
 //        R.layout.item_tweet
+        ViewDataBinding mBinding;
 
         public ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+            this.mBinding = DataBindingUtil.bind(view);
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -92,7 +96,8 @@ public class TweetCursorAdapter extends CursorRecyclerViewAdapter<TweetCursorAda
         // Populate fields with extracted properties
         viewHolder.tvBody.setText(tweet.getBody());
         User user = User.find(tweet.getUserId());
-        viewHolder.tvUserName.setText(user.getName());
+//        viewHolder.tvUserName.setText(user.getName());
+        viewHolder.mBinding.setVariable(com.codepath.apps.simplecptweets.BR.user, user);
         viewHolder.tvScreenName.setText("@" + user.getScreeName());
 //        viewHolder.tvTimeLine.setText(getRelativeTimeAgo(tweet.getCreatedAt()));
         viewHolder.tvTimeLine.setText(TimeUtils.timeAgo(new Date(tweet.getCreatedAt())));
