@@ -10,9 +10,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,6 +22,8 @@ import com.codepath.apps.simplecptweets.TwitterClient;
 import com.codepath.apps.simplecptweets.models.Tweet;
 import com.codepath.apps.simplecptweets.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.malmstein.fenster.controller.SimpleMediaFensterPlayerController;
+import com.malmstein.fenster.view.FensterVideoView;
 
 import org.json.JSONObject;
 import org.parceler.Parcels;
@@ -48,12 +49,16 @@ public class DetailActivity extends AppCompatActivity {
     TextView tvScreenName;
     @BindView(R.id.tvTimeLine)
     TextView tvTimeLine;
-    @BindView(R.id.wvMedia)
-    WebView wvMedia;
     @BindView(R.id.etReply)
     EditText etReply;
     @BindView(R.id.fab)
     FloatingActionButton fab;
+    @BindView(R.id.play_video_texture)
+    FensterVideoView playVideoTexture;
+    @BindView(R.id.play_video_controller)
+    SimpleMediaFensterPlayerController  playVideoController;
+    @BindView(R.id.flMedia)
+    FrameLayout flMedia;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,21 +115,11 @@ public class DetailActivity extends AppCompatActivity {
         SimpleDateFormat df = new SimpleDateFormat("hh:mm aa - dd MMM yyyy");
         tvTimeLine.setText(df.format(date));
 
-        wvMedia.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                return false;
-            }
-        });
-        wvMedia.getSettings().setLoadsImagesAutomatically(true);
-        wvMedia.getSettings().setJavaScriptEnabled(true);
-        // Enable responsive layout
-//        wvMedia.getSettings().setUseWideViewPort(true);
-// Zoom out if the content width is greater than the width of the veiwport
-//        wvMedia.getSettings().setLoadWithOverviewMode(true);
-//        String frameVideo = "<html><body>Video From YouTube<br><iframe width=\"420\" height=\"315\" src=\"https://www.youtube.com/embed/47yJ2XCRLZs\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
-        String frameVideo = "<html><body>Video From YouTube<br><iframe width=\"320\" height=\"240\" src=\"https://goo.gl/cHZzP6\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
-        wvMedia.loadData(frameVideo, "text/html", "utf-8");
+        playVideoTexture.setMediaController(playVideoController);
+
+        playVideoTexture.setVideo("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4",
+                playVideoController.DEFAULT_VIDEO_START);
+        playVideoTexture.start();
     }
 
     @Override
