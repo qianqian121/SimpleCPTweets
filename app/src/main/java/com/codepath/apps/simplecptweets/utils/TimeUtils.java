@@ -40,8 +40,7 @@ public class TimeUtils {
     private static String toYears(DateTime date, DateTime now) {
         int result = Years.yearsBetween(date, now).getYears();
         if (Math.abs(result) >= 1) {
-            return Math.abs(result) == 1 ? (result == 1 ? "Last" : "Next") + " year" :
-                    toReference(Math.abs(result), result, " year ");
+            return toReference(Math.abs(result), result, "year ");
         }
         return null;
     }
@@ -49,8 +48,7 @@ public class TimeUtils {
     private static String toMonths(DateTime date, DateTime now) {
         int result = Months.monthsBetween(date, now).getMonths();
         if (Math.abs(result) >= 1) {
-            return Math.abs(result) == 1 ? (result == 1 ? "Last" : "Next") + " month" :
-                    toReference(Math.abs(result), result, " mon ");
+            return toReference(Math.abs(result), result, "mon ");
         }
         return null;
     }
@@ -58,8 +56,7 @@ public class TimeUtils {
     private static String toDays(DateTime date, DateTime now) {
         int result = Days.daysBetween(date, now).getDays();
         if (Math.abs(result) >= 1) {
-            return Math.abs(result) == 1 ? (result == 1 ? "Yesterday" : "Tomorrow") :
-                    toReference(Math.abs(result), result, " d ");
+            return toReference(Math.abs(result), result, "d ");
         }
         return null;
     }
@@ -67,15 +64,14 @@ public class TimeUtils {
     private static String toHours(DateTime date, DateTime now) {
         int result = Hours.hoursBetween(date, now).getHours();
         if (Math.abs(result) >= 1) {
-            return Math.abs(result) == 1 ? "1 hour " + (result == 1 ? "ago" : "from now") :
-                    toReference(Math.abs(result), result, " h ");
+            return toReference(Math.abs(result), result, "h ");
         }
         return null;
     }
 
     private static String toMinutes(DateTime date, DateTime now) {
         int minutes = Minutes.minutesBetween(date, now).getMinutes();
-        return toReference(Math.abs(minutes), minutes, " m ");
+        return toReference(Math.abs(minutes), minutes, "m ");
     }
 
     private static String toReference(long prefix, long suffixValue, String suffix) {
