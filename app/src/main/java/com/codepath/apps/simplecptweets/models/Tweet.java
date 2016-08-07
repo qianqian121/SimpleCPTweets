@@ -1,6 +1,8 @@
 package com.codepath.apps.simplecptweets.models;
 
 import android.database.Cursor;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.provider.BaseColumns;
 import android.util.Log;
 
@@ -24,12 +26,31 @@ import java.util.Locale;
 
 // Parse the JSON + store the data, encapsulate state logic or display logic
 @Table(name = "tweets", id = BaseColumns._ID)
-public class Tweet extends Model {
+public class Tweet extends Model implements Parcelable {
     // list out the attributes
     @Column(name = "body")
     private String body;
     @Column(name = "uid")
     private long uid;   // unique id for the tweet
+
+    protected Tweet(Parcel in) {
+        body = in.readString();
+        uid = in.readLong();
+        userId = in.readLong();
+        createdAt = in.readLong();
+    }
+
+    public static final Creator<Tweet> CREATOR = new Creator<Tweet>() {
+        @Override
+        public Tweet createFromParcel(Parcel in) {
+            return new Tweet(in);
+        }
+
+        @Override
+        public Tweet[] newArray(int size) {
+            return new Tweet[size];
+        }
+    };
 
     public long getUserId() {
         return userId;
@@ -186,5 +207,18 @@ public class Tweet extends Model {
         Tweet tweet = new Tweet();
         tweet.loadFromCursor(cursor);
         return tweet;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flag) {
+        dest.writeString(this.body);
+        dest.writeLong(this.uid);
+        dest.writeLong(this.userId);
+        dest.writeLong(this.createdAt);
     }
 }

@@ -82,6 +82,6 @@ public class User extends Model {
         User existingUser =
                 new Select().from(User.class).where("uid = ?", rId).executeSingle();
 
-            return existingUser;
+        return existingUser;
     }
 }

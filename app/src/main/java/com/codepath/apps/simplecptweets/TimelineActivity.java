@@ -27,6 +27,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.parceler.Parcels;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,7 +46,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeFragme
     TweetCursorAdapter mTweetCursorAdapter;
     Cursor mCursor;
     LinearLayoutManager mLinearLayoutManager;
-
+    private final int REQUEST_CODE = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +92,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeFragme
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
             mTweetCursorAdapter.notifyDataSetChanged();
         }
     }
@@ -153,7 +154,9 @@ public class TimelineActivity extends AppCompatActivity implements ComposeFragme
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(TimelineActivity.this, DetailActivity.class);
-                startActivity(intent);
+                Tweet tweet = Tweet.fromCursor(mTweetCursorAdapter.getCursor(rvTweets.getChildAdapterPosition(view)));
+                intent.putExtra("tweetDetail", Parcels.wrap(tweet));
+                startActivityForResult(intent, REQUEST_CODE);
                 return;
             }
         });
