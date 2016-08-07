@@ -65,24 +65,18 @@
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvBody"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="18dp"
+        android:layout_alignParentEnd="true"
         android:id="@+id/flMedia"
         tools:context=".activities.DetailActivity">
 
-        <com.malmstein.fenster.view.FensterVideoView
-            android:id="@+id/play_video_texture"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:keepScreenOn="true"
-            android:fitsSystemWindows="true" />
-
-        <com.malmstein.fenster.controller.SimpleMediaFensterPlayerController
-            android:id="@+id/play_video_controller"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:animateLayoutChanges="true"
-            android:fitsSystemWindows="true" />
+        <com.volokh.danylo.video_player_manager.ui.VideoPlayerView
+            android:id="@+id/video_player"
+            android:layout_height="240dp"
+            android:layout_width="match_parent" />
 
     </FrameLayout>
 

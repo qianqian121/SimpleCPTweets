@@ -22,8 +22,11 @@ import com.codepath.apps.simplecptweets.TwitterClient;
 import com.codepath.apps.simplecptweets.models.Tweet;
 import com.codepath.apps.simplecptweets.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.malmstein.fenster.controller.SimpleMediaFensterPlayerController;
-import com.malmstein.fenster.view.FensterVideoView;
+import com.volokh.danylo.video_player_manager.manager.PlayerItemChangeListener;
+import com.volokh.danylo.video_player_manager.manager.SingleVideoPlayerManager;
+import com.volokh.danylo.video_player_manager.manager.VideoPlayerManager;
+import com.volokh.danylo.video_player_manager.meta.MetaData;
+import com.volokh.danylo.video_player_manager.ui.VideoPlayerView;
 
 import org.json.JSONObject;
 import org.parceler.Parcels;
@@ -55,10 +58,8 @@ public class DetailActivity extends AppCompatActivity {
     FloatingActionButton fab;
     @BindView(R.id.flMedia)
     FrameLayout flMedia;
-    @BindView(R.id.play_video_texture)
-    FensterVideoView playVideoTexture;
-    @BindView(R.id.play_video_controller)
-    SimpleMediaFensterPlayerController playVideoController;
+    @BindView(R.id.video_player)
+    VideoPlayerView videoPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,11 +116,14 @@ public class DetailActivity extends AppCompatActivity {
         SimpleDateFormat df = new SimpleDateFormat("hh:mm aa - dd MMM yyyy");
         tvTimeLine.setText(df.format(date));
 
-        playVideoTexture.setMediaController(playVideoController);
-
-        playVideoTexture.setVideo("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4",
-                playVideoController.DEFAULT_VIDEO_START);
-        playVideoTexture.start();
+        VideoPlayerManager mVideoPlayerManager = new SingleVideoPlayerManager(new PlayerItemChangeListener() {
+            @Override
+            public void onPlayerItemChanged(MetaData currentItemMetaData) {
+                return;
+            }
+        });
+        mVideoPlayerManager.playNewVideo(null, videoPlayer, "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
+//        mVideoPlayerManager.playNewVideo(null, videoPlayer, "https://goo.gl/cHZzP6");   // not able to play
     }
 
     @Override
