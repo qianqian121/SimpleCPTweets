@@ -11,8 +11,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -26,8 +26,9 @@ import com.volokh.danylo.video_player_manager.manager.PlayerItemChangeListener;
 import com.volokh.danylo.video_player_manager.manager.SingleVideoPlayerManager;
 import com.volokh.danylo.video_player_manager.manager.VideoPlayerManager;
 import com.volokh.danylo.video_player_manager.meta.MetaData;
-import com.volokh.danylo.video_player_manager.ui.VideoPlayerView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcels;
 
@@ -56,10 +57,8 @@ public class DetailActivity extends AppCompatActivity {
     EditText etReply;
     @BindView(R.id.fab)
     FloatingActionButton fab;
-    @BindView(R.id.flMedia)
-    FrameLayout flMedia;
-    @BindView(R.id.video_player)
-    VideoPlayerView videoPlayer;
+    @BindView(R.id.llMedia)
+    LinearLayout llMedia;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +109,7 @@ public class DetailActivity extends AppCompatActivity {
         String reply = "@" + user.getScreeName();
         tvScreenName.setText(reply);
         etReply.setText(reply + " ");
+        etReply.setSelection(etReply.getText().length());
         Glide.with(DetailActivity.this).load(user.getProfileImageUrl()).into(ivProfileImage);
 
         Date date = new Date(tweet.getCreatedAt());
@@ -122,8 +122,53 @@ public class DetailActivity extends AppCompatActivity {
                 return;
             }
         });
-        mVideoPlayerManager.playNewVideo(null, videoPlayer, "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
+//        mVideoPlayerManager.playNewVideo(null, videoPlayer, "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
 //        mVideoPlayerManager.playNewVideo(null, videoPlayer, "https://goo.gl/cHZzP6");   // not able to play
+
+        loadImage(tweet.getUid());
+    }
+
+    private void loadImage(long uId) {
+        TwitterClient client = TwitterApplication.getRestClient();
+        client.getHomeTimeline(1, uId, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+//                Toast.makeText(TimelineActivity.this, "Load more JSON success", Toast.LENGTH_SHORT).show();
+                Log.d("TWITTER", response.toString());
+                String url = "";
+                try {
+                    JSONObject extEntity = response.getJSONObject(0).getJSONObject("extended_entities");
+                    if (extEntity == null)
+                        return;
+                    JSONArray media = extEntity.getJSONArray("media");
+                    if (media == null)
+                        return;
+                    url = media.getJSONObject(0).getString("media_url");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                injectImage(url);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d("TWITTER", errorResponse.toString());
+            }
+        });
+    }
+
+    private void injectImage(String url) {
+        ImageView image = new ImageView(this);
+        image.setLayoutParams(new android.view.ViewGroup.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+//        image.setMaxHeight(20);
+//        image.setMaxWidth(20);
+
+//        Glide.with(this).load("http://pbs.twimg.com/media/CpQbWQAWgAAf6cY.jpg").into(image);
+        Glide.with(this).load(url).into(image);
+        // Adds the view to the layout
+        llMedia.addView(image);
     }
 
     @Override

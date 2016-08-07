@@ -41,7 +41,7 @@
         android:autoLink="all"
         android:linksClickable="true"
         android:textColorLink="@android:color/holo_blue_light"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="2dp"
         android:layout_below="@+id/ivProfileImage"
         android:layout_alignParentStart="true" />
 
@@ -58,34 +58,27 @@
         android:layout_height="wrap_content"
         android:text="timeline"
         android:id="@+id/tvTimeLine"
-        android:layout_below="@+id/flMedia"
+        android:layout_below="@+id/llMedia"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="39dp" />
+        android:layout_marginTop="3dp" />
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvBody"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="1dp"
         android:layout_alignParentEnd="true"
-        android:id="@+id/flMedia"
-        tools:context=".activities.DetailActivity">
-
-        <com.volokh.danylo.video_player_manager.ui.VideoPlayerView
-            android:id="@+id/video_player"
-            android:layout_height="240dp"
-            android:layout_width="match_parent" />
-
-    </FrameLayout>
+        android:id="@+id/llMedia"
+        android:orientation="vertical">
+    </LinearLayout>
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvTimeLine"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="83dp"
+        android:layout_marginTop="8dp"
         android:layout_alignParentEnd="true"
         app:counterEnabled="true"
         app:counterMaxLength="140"
