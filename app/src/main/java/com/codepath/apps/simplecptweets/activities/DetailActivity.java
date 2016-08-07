@@ -125,8 +125,54 @@ public class DetailActivity extends AppCompatActivity {
 //        mVideoPlayerManager.playNewVideo(null, videoPlayer, "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
 //        mVideoPlayerManager.playNewVideo(null, videoPlayer, "https://goo.gl/cHZzP6");   // not able to play
 
-        loadImage(tweet.getUid());
-        loadVideo(tweet.getUid());
+        looaMedia(tweet.getUid());
+//        loadImage(tweet.getUid());
+//        loadVideo(tweet.getUid());
+    }
+
+    private void looaMedia(long uId) {
+        TwitterClient client = TwitterApplication.getRestClient();
+        client.getHomeTimeline(1, uId, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+//                Toast.makeText(TimelineActivity.this, "Load more JSON success", Toast.LENGTH_SHORT).show();
+                Log.d("TWITTER", response.toString());
+
+                String imageUrl = "";
+                try {
+                    JSONObject extEntity = response.getJSONObject(0).getJSONObject("extended_entities");
+                    if (extEntity != null) {
+                        JSONArray media = extEntity.getJSONArray("media");
+                        if (media != null) {
+                            imageUrl = media.getJSONObject(0).getString("media_url");
+                            injectImage(imageUrl);
+                            return;
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                String videoUrl = "";
+                try {
+                    JSONObject extEntity = response.getJSONObject(0).getJSONObject("entities");
+                    if (extEntity != null) {
+                        JSONArray media = extEntity.getJSONArray("urls");
+                        if (media != null) {
+                            videoUrl = media.getJSONObject(0).getString("expanded_url");
+                            injectVideo(videoUrl);
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d("TWITTER", errorResponse.toString());
+            }
+        });
     }
 
     private void loadVideo(long uId) {
@@ -162,13 +208,14 @@ public class DetailActivity extends AppCompatActivity {
         final WebView wvMedia = new WebView(this);
 //        wvMedia.setLayoutParams(new LinearLayout.LayoutParams(1024, 720));
         wvMedia.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 600));
-//        llMedia.addView(wvMedia);
+        llMedia.addView(wvMedia);
         wvMedia.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                llMedia.addView(wvMedia);
-                return true;
+//                view.loadUrl(url);
+//                llMedia.addView(wvMedia);
+//                return true;
+                return false;
             }
         });
         wvMedia.setWebChromeClient(new WebChromeClient() {
