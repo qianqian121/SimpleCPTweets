@@ -14,9 +14,11 @@ import com.bumptech.glide.Glide;
 import com.codepath.apps.simplecptweets.R;
 import com.codepath.apps.simplecptweets.models.Tweet;
 import com.codepath.apps.simplecptweets.models.User;
+import com.codepath.apps.simplecptweets.utils.TimeUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -92,7 +94,8 @@ public class TweetCursorAdapter extends CursorRecyclerViewAdapter<TweetCursorAda
         User user = User.find(tweet.getUserId());
         viewHolder.tvUserName.setText(user.getName());
         viewHolder.tvScreenName.setText("@" + user.getScreeName());
-        viewHolder.tvTimeLine.setText(getRelativeTimeAgo(tweet.getCreatedAt()));
+//        viewHolder.tvTimeLine.setText(getRelativeTimeAgo(tweet.getCreatedAt()));
+        viewHolder.tvTimeLine.setText(TimeUtils.timeAgo(new Date(tweet.getCreatedAt())));
         Glide.with(viewHolder.itemView.getContext()).load(user.getProfileImageUrl()).into(viewHolder.ivProfileImage);
 //        Log.d("TWITTER", "View Holder");
 //        viewHolder.tvBody.setText(tweet.getUser().getScreeName());

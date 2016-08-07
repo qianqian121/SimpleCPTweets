@@ -47,4 +47,5 @@ dependencies {
     compile 'com.github.danylovolokh:video-player-manager:0.2.0'
     compile 'com.sprylab.android.texturevideoview:texturevideoview:1.1.1'
     compile 'com.malmstein:fenster:0.0.2'
+    compile 'net.danlew:android.joda:2.9.4.1'
 }
