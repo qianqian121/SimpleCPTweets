@@ -53,12 +53,12 @@ public class DetailActivity extends AppCompatActivity {
     EditText etReply;
     @BindView(R.id.fab)
     FloatingActionButton fab;
+    @BindView(R.id.flMedia)
+    FrameLayout flMedia;
     @BindView(R.id.play_video_texture)
     FensterVideoView playVideoTexture;
     @BindView(R.id.play_video_controller)
-    SimpleMediaFensterPlayerController  playVideoController;
-    @BindView(R.id.flMedia)
-    FrameLayout flMedia;
+    SimpleMediaFensterPlayerController playVideoController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +74,7 @@ public class DetailActivity extends AppCompatActivity {
             actionBar.setDisplayShowHomeEnabled(true);
         }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
