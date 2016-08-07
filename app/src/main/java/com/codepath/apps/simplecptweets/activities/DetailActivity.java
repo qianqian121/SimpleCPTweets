@@ -13,6 +13,7 @@ import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -125,19 +126,51 @@ public class DetailActivity extends AppCompatActivity {
 //        mVideoPlayerManager.playNewVideo(null, videoPlayer, "https://goo.gl/cHZzP6");   // not able to play
 
         loadImage(tweet.getUid());
-        loadVideo();
+        loadVideo(tweet.getUid());
     }
 
-    private void loadVideo() {
-        WebView wvMedia = new WebView(this);
-        wvMedia.setLayoutParams(new LinearLayout.LayoutParams(1024, 720));
-        llMedia.addView(wvMedia);
-//        wvMedia.setWebViewClient(new WebViewClient() {
-//            @Override
-//            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//                return false;
-//            }
-//        });
+    private void loadVideo(long uId) {
+        TwitterClient client = TwitterApplication.getRestClient();
+        client.getHomeTimeline(1, uId, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+//                Toast.makeText(TimelineActivity.this, "Load more JSON success", Toast.LENGTH_SHORT).show();
+                Log.d("TWITTER", response.toString());
+                String url = "";
+                try {
+                    JSONObject extEntity = response.getJSONObject(0).getJSONObject("entities");
+                    if (extEntity == null)
+                        return;
+                    JSONArray media = extEntity.getJSONArray("urls");
+                    if (media == null)
+                        return;
+                    url = media.getJSONObject(0).getString("expanded_url");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                injectVideo(url);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d("TWITTER", errorResponse.toString());
+            }
+        });
+    }
+
+    private void injectVideo(String url) {
+        final WebView wvMedia = new WebView(this);
+//        wvMedia.setLayoutParams(new LinearLayout.LayoutParams(1024, 720));
+        wvMedia.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 600));
+//        llMedia.addView(wvMedia);
+        wvMedia.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                llMedia.addView(wvMedia);
+                return true;
+            }
+        });
         wvMedia.setWebChromeClient(new WebChromeClient() {
         });
         wvMedia.getSettings().setLoadsImagesAutomatically(true);
@@ -147,14 +180,16 @@ public class DetailActivity extends AppCompatActivity {
         wvMedia.getSettings().setPluginState(WebSettings.PluginState.ON);
         wvMedia.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         // Enable responsive layout
-//        wvMedia.getSettings().setUseWideViewPort(true);
+        wvMedia.getSettings().setUseWideViewPort(true);
 // Zoom out if the content width is greater than the width of the veiwport
-//        wvMedia.getSettings().setLoadWithOverviewMode(true);
-//        String frameVideo = "<html><body>Video From YouTube<br><iframe width=\"320\" height=\"240\" src=\"https://www.youtube.com/embed/47yJ2XCRLZs\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
-        String frameVideo = "<html><body>Youtube video .. <br> <iframe width=\"320\" height=\"315\" src=\"https://www.youtube.com/embed/lY2H2ZP56K4\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
+        wvMedia.getSettings().setLoadWithOverviewMode(true);
+//        String frameVideo = "<html><body>Video<br><iframe width=\"1080\" height=\"800\" src=\"https://www.youtube.com/embed/47yJ2XCRLZs\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
+        String frameVideo = String.format("<html><body>Video<br><iframe width=\"1080\" height=\"800\" src=\"%s\" frameborder=\"0\" allowfullscreen></iframe></body></html>", url);
+//        String frameVideo = "<html><body>Youtube video .. <br> <iframe width=\"320\" height=\"315\" src=\"https://www.youtube.com/embed/lY2H2ZP56K4\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
 
 //        String frameVideo = "<html><body>Video From YouTube<br><iframe width=\"320\" height=\"240\" src=\"https://goo.gl/cHZzP6\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
-        wvMedia.loadData(frameVideo, "text/html", "utf-8");
+//        wvMedia.loadData(frameVideo, "text/html", "utf-8");
+        wvMedia.loadUrl(url);
     }
 
     private void loadImage(long uId) {
