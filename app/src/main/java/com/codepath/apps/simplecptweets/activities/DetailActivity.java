@@ -10,6 +10,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,10 +25,6 @@ import com.codepath.apps.simplecptweets.TwitterClient;
 import com.codepath.apps.simplecptweets.models.Tweet;
 import com.codepath.apps.simplecptweets.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.volokh.danylo.video_player_manager.manager.PlayerItemChangeListener;
-import com.volokh.danylo.video_player_manager.manager.SingleVideoPlayerManager;
-import com.volokh.danylo.video_player_manager.manager.VideoPlayerManager;
-import com.volokh.danylo.video_player_manager.meta.MetaData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -116,16 +115,46 @@ public class DetailActivity extends AppCompatActivity {
         SimpleDateFormat df = new SimpleDateFormat("hh:mm aa - dd MMM yyyy");
         tvTimeLine.setText(df.format(date));
 
-        VideoPlayerManager mVideoPlayerManager = new SingleVideoPlayerManager(new PlayerItemChangeListener() {
-            @Override
-            public void onPlayerItemChanged(MetaData currentItemMetaData) {
-                return;
-            }
-        });
+//        VideoPlayerManager mVideoPlayerManager = new SingleVideoPlayerManager(new PlayerItemChangeListener() {
+//            @Override
+//            public void onPlayerItemChanged(MetaData currentItemMetaData) {
+//                return;
+//            }
+//        });
 //        mVideoPlayerManager.playNewVideo(null, videoPlayer, "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
 //        mVideoPlayerManager.playNewVideo(null, videoPlayer, "https://goo.gl/cHZzP6");   // not able to play
 
         loadImage(tweet.getUid());
+        loadVideo();
+    }
+
+    private void loadVideo() {
+        WebView wvMedia = new WebView(this);
+        wvMedia.setLayoutParams(new LinearLayout.LayoutParams(1024, 720));
+        llMedia.addView(wvMedia);
+//        wvMedia.setWebViewClient(new WebViewClient() {
+//            @Override
+//            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+//                return false;
+//            }
+//        });
+        wvMedia.setWebChromeClient(new WebChromeClient() {
+        });
+        wvMedia.getSettings().setLoadsImagesAutomatically(true);
+        wvMedia.getSettings().setJavaScriptEnabled(true);
+        wvMedia.getSettings().setAllowFileAccess(true);
+        wvMedia.getSettings().setAllowUniversalAccessFromFileURLs(true);
+        wvMedia.getSettings().setPluginState(WebSettings.PluginState.ON);
+        wvMedia.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+        // Enable responsive layout
+//        wvMedia.getSettings().setUseWideViewPort(true);
+// Zoom out if the content width is greater than the width of the veiwport
+//        wvMedia.getSettings().setLoadWithOverviewMode(true);
+//        String frameVideo = "<html><body>Video From YouTube<br><iframe width=\"320\" height=\"240\" src=\"https://www.youtube.com/embed/47yJ2XCRLZs\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
+        String frameVideo = "<html><body>Youtube video .. <br> <iframe width=\"320\" height=\"315\" src=\"https://www.youtube.com/embed/lY2H2ZP56K4\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
+
+//        String frameVideo = "<html><body>Video From YouTube<br><iframe width=\"320\" height=\"240\" src=\"https://goo.gl/cHZzP6\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
+        wvMedia.loadData(frameVideo, "text/html", "utf-8");
     }
 
     private void loadImage(long uId) {
